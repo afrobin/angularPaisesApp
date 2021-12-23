@@ -13,10 +13,13 @@ export class PorPaisComponent  {
   hayError: boolean = false;
   hayPais: boolean = false;
   paises: Country[]=[];
+  paisesSugeridos: Country[]=[];
+  isSugerencias: boolean =false;
 
   constructor(private paisService: PaisService) { }
 
   buscar(termino: string){
+    this.isSugerencias = false;
     this.hayError = false;
     this.hayPais = false;
     this.termino = termino;
@@ -39,6 +42,15 @@ export class PorPaisComponent  {
 
   sugerencias(termino: string){
       this.hayError = false;
+      this.termino = termino;
+      this.paisService.buscarPais(termino)
+      .subscribe(paises => this.paisesSugeridos = paises.splice(0,5),
+      (error) => this.paisesSugeridos = []
+      );
+  }
+  buscarSugerido(termino:string){
+    this.buscar(termino);
+    
   }
 
 }
